@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package proyectofinal;
-
+import controllers.Controller;
+import controllers.leerTxt;
+ 
 /**
  *
  * @author e009474
@@ -15,8 +17,8 @@ public class ProyectoFinal {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-   
-    
+        login lg=new login();
+        lg.main(args);
     }
     
 }
