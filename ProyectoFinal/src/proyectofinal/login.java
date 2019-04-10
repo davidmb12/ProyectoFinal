@@ -5,7 +5,6 @@
  */
 package proyectofinal;
 
-import controllers.Controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -22,14 +21,11 @@ public class login extends javax.swing.JFrame {
      */
     private ArrayList<String> usuariosContras = new ArrayList<String>();
 
-    private Controller nuevo=new Controller();
-    public login(){
-        initComponents();
-    }
-    public login(int i) {
+    private Controller nuevo;
+    public login() throws IOException {
+        this.nuevo = new Controller();
         initComponents();
        
-       usuariosContras= nuevo.usuLogin(this.usuariosContras);
     }
 
     /**
@@ -47,7 +43,6 @@ public class login extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
 
         login.setText("Ingresar");
         login.addActionListener(new java.awt.event.ActionListener() {
@@ -110,15 +105,16 @@ public class login extends javax.swing.JFrame {
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         String usuario=user.getText();
         String pass=passWord.getText();
-       if( nuevo.onClickButtonLogin(this.usuariosContras, usuario, pass)){
-           OptionView ov=new OptionView();
-           ov.setVisible(true);
-           this.usuariosContras.removeAll(usuariosContras);
-           dispose();
-           
-       }
-               
-       
+        boolean log=false;
+        try {
+            log=nuevo.onClickButtonLogin(usuario,pass);
+            if(log){
+                dispose();
+            }
+            
+        } catch (IOException ex) {
+            Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+        }
     
     }//GEN-LAST:event_loginActionPerformed
 
@@ -160,7 +156,11 @@ public class login extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new login(1).setVisible(true);
+                try {
+                    new login().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

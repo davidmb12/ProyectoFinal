@@ -12,6 +12,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,25 +23,65 @@ import java.util.StringTokenizer;
  */
 public class leerTxt {
 
-    private String ruta = "C:\\Users\\e009474\\Desktop\\usuConts.txt";
+    private String ruta = "/Users/Dayna/Desktop/carpeta sin título/output.txt";
 
     public leerTxt() throws IOException {
     }
 
-    public ArrayList StringToArray(String linea) {
-        ArrayList<String> array = new ArrayList<String>();
+    public boolean StringToArray(String linea,String usu,String pass) {
+        ArrayList<String> arrayUsu = new ArrayList<String>();
+        ArrayList<String> arrayCont = new ArrayList<String>();
+        String mensaje="";
         StringTokenizer st = new StringTokenizer(linea, ",");
+        boolean log=false;
+        int cont=0;
         while (st.hasMoreTokens()) {
-            array.add(String.valueOf(st.nextToken()));
+            if(cont%2==0){
+             arrayUsu.add(String.valueOf(st.nextToken()));
 
+            }else{
+             arrayCont.add(String.valueOf(st.nextToken()));
+
+
+            }
+            cont++;
         }
-        for (int i = 0; i < array.size(); i++) {
-            System.out.println(array.get(i));
+        
+        
+        for (int i = 0; i <arrayUsu.size(); i++) {
+            if(log==true){
+                break;
+            }
+            if(arrayUsu.get(i).equals(usu) ){
+                System.out.println("si");
+                        System.out.println(arrayUsu.get(i));
+
+            for(int j=0;j<arrayCont.size();j++){
+                if(arrayCont.get(j).equals(pass)&& j==i){
+                  System.out.println(arrayCont.get(i));
+
+                    mensaje="Bienvenido "+ usu;
+                    
+                    log=true;
+                    break;
+            }else{
+                    mensaje="Contrase;a invalida";
+                    log=false;
+                }
+            }
+        }else{
+                mensaje="Usuario invalido";
+            }
         }
-        return array;
+        popUp(mensaje,"");
+
+        return log;
     }
+    public void popUp(String infoMensaje, String title){
+         JOptionPane.showMessageDialog(null,infoMensaje, title,JOptionPane.INFORMATION_MESSAGE);
+     }
 
-    public ArrayList leer() throws FileNotFoundException, IOException {
+    public boolean leer(String usu, String pass) throws FileNotFoundException, IOException {
         File archivo = null;
         FileReader fr = null;
         BufferedReader br = null;
@@ -57,7 +101,7 @@ public class leerTxt {
         lineaNueva = lineaNueva.replaceFirst(",", "");
         System.out.println(lineaNueva);
 
-        return StringToArray(lineaNueva);
+        return StringToArray(lineaNueva,usu,pass);
 
     }
 }
